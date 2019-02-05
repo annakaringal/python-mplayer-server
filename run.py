@@ -7,12 +7,12 @@ import os
 import socketserver
 
 HOST = 'localhost'
-PORT = 9998
+PORT = 60080
 FILE_PATH = os.getcwd() + '/assets/test8.mkv'
 
 class MPlayer():
     def __init__(self):
-        self.command = 'mplayer -vfm ffmpeg '
+        self.command = 'mplayer -fs -framedrop -vfm ffmpeg '
 
     def play(self, file_path):
         command = self.command + file_path
@@ -37,7 +37,8 @@ class MPlayerServer(BaseHTTPRequestHandler):
         self._set_headers()
 
     def do_POST(self):
-        if self.path != '/play':
+        path = self.path.split('?')
+        if path[0] != '/play':
             self._set_headers(404)
             return
 
